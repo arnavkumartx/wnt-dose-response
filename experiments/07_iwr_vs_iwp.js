@@ -59,28 +59,50 @@ console.log('  the receptor); IWR-1 lowers TCF_B by ~29 % but NOT below the NKX2
 console.log('  threshold, so neither rescues. The question is where the crossover is.');
 
 // --- where CAN a tankyrase inhibitor rescue continuous CHIR? ---------------
-console.log('\nContinuous CHIR at varying dose, inhibitor d3-5. TNNT2 at day 10:');
-const sweepRows = [1, 1.5, 2, 3, 4, 6, 9].map((dose) => {
-  const row = [String(dose)];
-  for (const extra of [{}, { iwp: 0.95 }, { iwr: 0.90 }]) {
-    const u = protocol([
-      { from: 0, to: T, set: { chir: dose } },
-      { from: 72, to: 120, set: { chir: dose, ...extra } }
-    ]);
-    const tr = rk4(rhs, initialState(), { tEnd: T, h: 0.005, sample: T, u });
-    row.push(r2(tr[tr.length - 1].y[IDX.TNNT2]));
-  }
-  return row;
-});
-console.log(table(['CHIR uM', 'no inhibitor', 'IWP2', 'IWR-1'], sweepRows));
-console.log('\n  There is NO rescue window. A 2.35x scaffold increase cannot outrun');
-console.log('  direct GSK3 inhibition, and below ~2 uM the streak never fires in');
-console.log('  the first place. So the explicit-scaffold layer does NOT predict');
-console.log('  the two inhibitors give different fates in the standard protocol.');
-console.log('\n  Where it does separate them is the DEPTH of the Wnt drop during');
-console.log('  the washout window: IWR-1 reaches TCF_B 0.82 against IWP2 1.55, a');
-console.log('  ~2x difference, because it suppresses below the basal set point');
-console.log('  rather than only removing ligand.');
+// Scanned at 0.1 uM resolution on purpose: the window is ~0.3 uM wide, and a
+// coarse grid steps straight over it and reports that no window exists.
+console.log('\nContinuous CHIR, inhibitor d3-5. TNNT2 at day 10:');
+const doses = [];
+for (let d = 1.0; d <= 3.001; d += 0.1) doses.push(Math.round(d * 10) / 10);
+for (const d of [4, 6, 9]) doses.push(d);
+
+const tnnt2 = (dose, extra) => {
+  const u = protocol([
+    { from: 0, to: T, set: { chir: dose } },
+    { from: 72, to: 120, set: { chir: dose, ...extra } }
+  ]);
+  const tr = rk4(rhs, initialState(), { tEnd: T, h: 0.005, sample: T, u });
+  return tr[tr.length - 1].y[IDX.TNNT2];
+};
+
+const sweep = doses.map((dose) => ({
+  dose, none: tnnt2(dose, {}), iwp: tnnt2(dose, { iwp: 0.95 }), iwr: tnnt2(dose, { iwr: 0.90 })
+}));
+console.log(table(['CHIR uM', 'no inhibitor', 'IWP2', 'IWR-1', ''],
+  sweep.map((s) => [r2(s.dose, 1), r2(s.none), r2(s.iwp), r2(s.iwr),
+    s.iwr > 0.5 ? '<-- IWR-1 rescues' : ''])));
+
+const win = sweep.filter((s) => s.iwr > 0.5 && s.iwp < 0.2).map((s) => s.dose);
+if (win.length) {
+  console.log(`\n  There IS a rescue window: ${Math.min(...win)}-${Math.max(...win)} uM`
+    + ` continuous CHIR, where IWR-1 recovers`);
+  console.log('  cardiomyocytes and IWP2 does not. Only IWR-1 acts below the step');
+  console.log('  CHIR acts on, so only IWR-1 can claw back destruction-complex');
+  console.log('  activity while the kinase is still inhibited.');
+  console.log('\n  But it is NARROW - a few tenths of a uM, bounded below by the');
+  console.log('  dose where the streak stops firing at all and above by the dose');
+  console.log('  where 2.35x more scaffold can no longer outrun the inhibitor.');
+  console.log('  A window that thin is a strong test and a fragile prediction:');
+  console.log('  it sits on [F]-tagged parameters, so calibrate before trusting');
+  console.log('  the exact numbers. Scan finely if you look for it.');
+} else {
+  console.log('\n  No rescue window at this resolution.');
+}
+
+console.log('\n  Separately, and robustly: IWR-1 drives the Wnt drop DEEPER during');
+console.log('  the washout window - TCF_B 0.82 against IWP2 1.55, ~2x - because it');
+console.log('  suppresses below the basal set point rather than only removing');
+console.log('  ligand. That difference does not depend on finding the window.');
 console.log('\n  TESTABLE, and cheap: run the normal GiWi protocol with each');
 console.log('  inhibitor and read AXIN2 by qPCR (or TOPflash) at d4. The model');
 console.log('  says IWR-1 drives it roughly twice as far down as IWP2 while TNNT2');

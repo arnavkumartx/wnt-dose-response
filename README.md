@@ -225,11 +225,21 @@ artefact read as a biological effect.
 
 ### What the interface layer does and does not predict (`npm run inhibitors`)
 
-With CHIR withdrawn, IWP2 and IWR-1 give the same fate. With CHIR still on,
-neither rescues — a 2.35× scaffold increase cannot outrun direct GSK3
-inhibition. Where they *do* separate is the depth of the Wnt drop during the
-washout window (TCF_B 0.82 for IWR-1 vs 1.55 for IWP2). **Testable and cheap:
-run GiWi with each inhibitor and read AXIN2 by qPCR at d4.**
+With CHIR withdrawn, IWP2 and IWR-1 give the same fate. With CHIR held on there
+is a **narrow rescue window at 1.5–1.8 µM where IWR-1 recovers cardiomyocytes
+(TNNT2 0.75) and IWP2 does not (0.03)** — only IWR-1 acts below the step CHIR
+acts on, so only it can claw back destruction-complex activity while the kinase
+is inhibited. Above ~1.9 µM a 2.35× scaffold increase can no longer outrun the
+inhibitor; below ~1.5 µM the streak never fires at all.
+
+That window is ~0.3 µM wide, which makes it a sharp test and a fragile
+prediction — it rests on `[F]`-tagged parameters, and a coarse dose grid steps
+straight over it. The scan runs at 0.1 µM resolution for exactly that reason.
+
+The robust half, independent of finding the window: **IWR-1 drives the Wnt drop
+about twice as deep as IWP2 during washout** (TCF_B 0.82 vs 1.55), because it
+suppresses below the basal set point rather than only removing ligand. Testable
+and cheap — run GiWi with each inhibitor and read AXIN2 by qPCR at d4.
 
 ICAT titration shows the other half: ICAT and TCF are mutually exclusive on ARM
 3–9, so ICAT drops the output ~60 % without changing β-catenin levels at all —
