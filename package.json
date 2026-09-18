@@ -1,0 +1,22 @@
+{
+  "name": "wnt-gsk3-stemcell-model",
+  "version": "0.2.0",
+  "description": "Mechanistic model: CHIR99021 -> GSK3 -> Wnt/beta-catenin -> stem cell fate. Cardiac mesoderm and cord blood HSPC modules.",
+  "type": "module",
+  "scripts": {
+    "calibrate": "node experiments/00_calibrate.js",
+    "gsk3": "node experiments/01_gsk3_inhibition.js",
+    "dose": "node experiments/02_chir_dose_response.js",
+    "biphasic": "node experiments/03_biphasic_wnt.js",
+    "sens": "node experiments/04_sensitivity.js",
+    "lineage": "node experiments/05_lineage_choice.js",
+    "cordblood": "node experiments/06_cordblood_dosage.js",
+    "inhibitors": "node experiments/07_iwr_vs_iwp.js",
+    "fitcheck": "node experiments/08_fit_check.js",
+    "fast": "npm run calibrate && npm run gsk3 && npm run biphasic && npm run cordblood && npm run inhibitors",
+    "all": "npm run fast && npm run dose && npm run lineage && npm run sens",
+    "fit": "node experiments/09_fit_mydata.js",
+    "hsc": "node run.js --model hsc --chir 1 --chir-end 168 --days 7"
+  },
+  "license": "MIT"
+}

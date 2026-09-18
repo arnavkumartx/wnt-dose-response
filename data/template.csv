@@ -1,0 +1,37 @@
+# TEMPLATE - the numbers below are PLACEHOLDERS generated from the model's own
+# current parameters, NOT measurements. Replace every `value` with yours before
+# fitting anything. Fitting the model to its own output teaches it nothing.
+#
+# kind      topflash | qpcr | flow
+# protocol  a name defined in the PROTOCOLS map of your fit script
+# readout   a model species: TCF_B TBXT MESP1 GATA4 NKX25 TNNT2 SOX17
+#                            HOXB4 MYC CDKN1C CCND1 CXCR4 CD34 CD90 CD45RA
+# time_h    hours from the start of induction
+# value     FOLD-CHANGE for topflash/qpcr, PERCENT (0-100) for flow
+# sd        fractional CV for fold-changes (0.35 = +/-35 %), points for flow
+# ref       protocol to take the fold-change against. Required for any marker
+#           that starts at zero - see data/README.md
+kind,protocol,readout,time_h,value,sd,ref
+# --- Wnt module: TOPflash dose-response at 24 h -----------------------------
+topflash,chir2,TCF_B,24,1.86,0.20,none
+topflash,chir4,TCF_B,24,2.72,0.20,none
+topflash,chir6,TCF_B,24,3.45,0.20,none
+topflash,chir12,TCF_B,24,4.87,0.20,none
+# --- fate module: qPCR timecourse, GiWi 6 uM, vs undifferentiated control ----
+qpcr,giwi6,TBXT,6,3.10,0.30,none
+qpcr,giwi6,TBXT,12,12.40,0.30,none
+qpcr,giwi6,TBXT,24,18.20,0.30,none
+qpcr,giwi6,TBXT,48,7.90,0.30,none
+qpcr,giwi6,MESP1,48,9.60,0.35,none
+qpcr,giwi6,NKX25,120,14.00,0.35,none
+# --- population module: flow, % positive of the surviving gate ---------------
+flow,giwi4,TNNT2,240,50.0,8,
+flow,giwi6,TNNT2,240,62.0,8,
+flow,giwi12,TNNT2,240,51.0,8,
+# --- cord blood module: CD34+ 7-day culture ----------------------------------
+qpcr,cb_chir1,HOXB4,168,2.10,0.30,cb_none
+qpcr,cb_chir1,MYC,168,1.40,0.30,cb_none
+qpcr,cb_chir6,HOXB4,168,4.60,0.30,cb_none
+qpcr,cb_chir6,MYC,168,6.80,0.30,cb_none
+flow,cb_chir1,CD34,168,55.0,10,
+flow,cb_none,CD34,168,28.0,10,
