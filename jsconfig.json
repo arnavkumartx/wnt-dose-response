@@ -1,0 +1,13 @@
+{
+  "//": "Cross-file IntelliSense for the ES modules in src/. Without this VS Code treats each file in isolation and ctrl-click navigation between modules does not work.",
+  "compilerOptions": {
+    "module": "ESNext",
+    "target": "ES2022",
+    "moduleResolution": "Bundler",
+    "lib": ["ES2022"],
+    "checkJs": false,
+    "baseUrl": "."
+  },
+  "include": ["src/**/*.js", "experiments/**/*.js", "run.js"],
+  "exclude": ["node_modules", "out"]
+}

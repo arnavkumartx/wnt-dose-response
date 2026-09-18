@@ -1,0 +1,48 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "//": "cwd must be the workspace root: report.js writes CSVs to ./out relative to process.cwd(), so launching with a different cwd scatters output.",
+      "type": "node",
+      "request": "launch",
+      "name": "Run the experiment I'm looking at",
+      "program": "${file}",
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Cord blood dose-response (06)",
+      "program": "${workspaceFolder}/experiments/06_cordblood_dosage.js",
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Biphasic Wnt (03)",
+      "program": "${workspaceFolder}/experiments/03_biphasic_wnt.js",
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Fitter recovery check (08)",
+      "program": "${workspaceFolder}/experiments/08_fit_check.js",
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal"
+    },
+    {
+      "//": "Edit args to try a protocol without touching any source.",
+      "type": "node",
+      "request": "launch",
+      "name": "run.js — cord blood, CHIR 1 uM",
+      "program": "${workspaceFolder}/run.js",
+      "args": ["--model", "hsc", "--chir", "1", "--chir-end", "168", "--days", "7"],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal"
+    }
+  ]
+}
