@@ -9,7 +9,7 @@ from pathlib import Path
 
 import pandas as pd
 
-# The repo root, i.e. the directory holding run.js — this file lives in notebooks/
+# The repo root, i.e. the directory holding run.js. This file lives in notebooks/
 ROOT = Path(__file__).resolve().parent.parent
 RUN_JS = ROOT / "run.js"
 
@@ -83,9 +83,9 @@ def population(model: str = "cardiac", cells: int = 200, **kwargs) -> pd.Series:
     """
     A dish rather than a cell: an ensemble with realistic cell-to-cell spread.
 
-    Returns the summary a flow cytometer would give you — pct_<marker> is the
-    percentage of the SURVIVING gate above threshold, and yield_<marker> is per
-    input cell. Use this, not run(), whenever you want to compare against flow.
+    Returns the summary a flow cytometer would report. pct_<marker> is the
+    percentage of the surviving gate above threshold and yield_<marker> is per
+    input cell. Use this rather than run() when comparing against flow data.
     """
     out = _invoke(model=model, cells=cells, **kwargs)
     return pd.Series(out["summary"], name=f"{model}/{cells}cells")

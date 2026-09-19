@@ -37,7 +37,7 @@ export function rk4(rhs, y0, { t0 = 0, tEnd = 168, h = 0.005, sample = 0.25, u, 
         // number and the run completes with that regulator simply switched off.
         // Fail loudly instead.
         throw new Error('non-finite state at t=' + t.toFixed(3) + ' h, index ' + i
-          + ' — check for a misspelled parameter name');
+          + ' (check for a misspelled parameter name)');
       }
       if (y[i] < 0) y[i] = 0;                   // concentrations stay physical
     }

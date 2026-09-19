@@ -22,9 +22,9 @@ Run `npm run calibrate` first. It checks numerical convergence by step halving
 and prints the undifferentiated steady state against its targets. If those are
 off, nothing downstream means anything.
 
-After a change, `npm run biphasic` is the fastest regression test: the GiWi arm
-should give TNNT2 ≈ 0.75 and the continuous-CHIR arm ≈ 0.02. Those two numbers
-catch most breakages.
+After a change, `npm run biphasic` is the fastest regression test. The GiWi arm
+should give TNNT2 near 0.75 and the continuous-CHIR arm near 0.02, and those two
+numbers catch most breakages.
 
 ## Claims live in scripts, not comments
 
@@ -43,18 +43,18 @@ Every parameter in `src/params.js` carries a provenance tag:
 
 | tag | meaning |
 |---|---|
-| `[M]` | measured — from a published measurement |
-| `[D]` | derived — computed from measured quantities |
-| `[F]` | fitted — tuned to reproduce a published qualitative result |
-| `[A]` | assumed — a placeholder |
+| `[M]` | measured, from a published measurement |
+| `[D]` | derived, computed from measured quantities |
+| `[F]` | fitted, tuned to reproduce a published qualitative result |
+| `[A]` | assumed, a placeholder |
 
 Keep the tag accurate when changing a value. `npm run sens` ranks parameters by
-normalised sensitivity; 66 of 112 move neither endpoint by more than 2 % per
+normalised sensitivity. 66 of 112 move neither endpoint by more than 2 % per
 10 % change, so check there before spending effort on one.
 
 Transcription factors use `k == d` so each stays bounded on [0,1] and reads as a
 fraction of maximal expression. The `k_*` values are generated from the `d_*`
-ones at load time — add a `d_` entry, not both.
+ones at load time, so add a `d_` entry rather than both.
 
 ## Fitting
 
@@ -75,5 +75,5 @@ python notebooks/make_figures.py --dpi 160
 cp out/figures/*.png docs/figures/
 ```
 
-Only commit updated figures when the underlying numbers have actually changed —
+Only commit updated figures when the underlying numbers have actually changed.
 PNG diffs are noise otherwise.

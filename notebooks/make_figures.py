@@ -1,7 +1,7 @@
 """
 The model's headline figures, as importable functions and as a script.
 
-In a notebook — every function returns a matplotlib Figure and also writes a
+In a notebook, every function returns a matplotlib Figure and also writes a
 PNG, so the plot appears inline and the file lands in out/figures/:
 
     import make_figures as mf
@@ -10,13 +10,13 @@ PNG, so the plot appears inline and the file lands in out/figures/:
     figs = mf.all_figures()          # all of them, all drawn inline
     mf.fig_cardiac_bell(cells=200)   # same figure, bigger ensemble
 
-From a shell — same code, headless, straight to files:
+From a shell, the same code runs headless and writes straight to files:
 
     python notebooks/make_figures.py --dpi 300
 
 Every function takes dpi and nothing else it does not need, so they are
 interchangeable. Shared simulation work is cached, so calling all of them costs
-barely more than calling the slowest one.
+barely more than calling the slowest one on its own.
 """
 
 from __future__ import annotations
@@ -108,11 +108,11 @@ def fig_threshold_gap(dpi: int = 200):
     ax.plot(cb.index, cb["MYC"], "s-", label="MYC  (niche exit)")
     ax.plot(cb.index, cb["STEM"], "^-", color="black", label="stem frequency")
     ax.set_xlabel("CHIR99021 (µM)")
-    ax.set_ylabel("level (0–1)")
+    ax.set_ylabel("level (0 to 1)")
     ax.legend()
     ax.set_title("The gap between these two thresholds sets the optimum")
     fig.text(0.5, -0.06,
-             "Measure these two by qPCR first — nothing else sets where the peak sits.",
+             "Measure these two by qPCR first. Nothing else sets where the peak sits.",
              ha="center", fontsize=9, style="italic", color="0.35")
     return _save(fig, "02_threshold_gap", dpi)
 
@@ -120,8 +120,8 @@ def fig_threshold_gap(dpi: int = 200):
 def fig_cardiac_biphasic(dpi: int = 200):
     """Wnt has to go on, then off."""
     arms = {
-        "GiWi: CHIR d0–1, IWP d3–5": dict(chir=6, chir_end=24, iwp="72:120"),
-        "CHIR d0–1 only": dict(chir=6, chir_end=24, iwp="none"),
+        "GiWi: CHIR d0-1, IWP d3-5": dict(chir=6, chir_end=24, iwp="72:120"),
+        "CHIR d0-1 only": dict(chir=6, chir_end=24, iwp="none"),
         "CHIR continuous": dict(chir=6, chir_end=240, iwp="none"),
         "no CHIR": dict(chir=0, chir_end=24, iwp="none"),
     }
@@ -158,7 +158,7 @@ def fig_cardiac_bell(dpi: int = 200, cells: int = 80):
     ax.plot(pop.index, pop["viability"] * 100, "^-", color="grey", label="viability %")
     ax.set_xlabel("CHIR99021 (µM)"); ax.set_ylabel("percent")
     ax.legend()
-    ax.set_title(f"Cardiac dose–response, {cells} simulated cells per point")
+    ax.set_title(f"Cardiac dose-response, {cells} simulated cells per point")
     fig.text(0.5, -0.06, "The graded curve IS the cell-to-cell heterogeneity.",
              ha="center", fontsize=9, style="italic", color="0.35")
     return _save(fig, "04_cardiac_bell", dpi)
