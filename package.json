@@ -20,5 +20,9 @@
     "jupyter": "start-jupyter.cmd"
   },
   "license": "MIT",
-  "author": "Arnav Kumar <arnav.kumar.tx@gmail.com>"
+  "author": "Arnav Kumar <301119729+arnavkumartx-source@users.noreply.github.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/arnavkumartx-source/wnt-fate.git"
+  }
 }
