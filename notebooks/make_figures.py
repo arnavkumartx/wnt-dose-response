@@ -29,10 +29,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import matplotlib
 
-# Only force the headless backend when this file is RUN as a script. Importing
-# it from a notebook must NOT switch the backend: doing so silently stops every
-# inline plot rendering for the rest of the kernel session, with no error to
-# explain why.
+# Force the headless backend only when this file is run as a script. Switching
+# it on import would stop inline plots rendering for the rest of a notebook
+# session, with no error raised.
 _AS_SCRIPT = __name__ == "__main__"
 if _AS_SCRIPT:
     matplotlib.use("Agg")

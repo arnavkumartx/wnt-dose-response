@@ -17,7 +17,7 @@ Two fate modules sit on one shared signalling core:
 
 ---
 
-## Read this first if you are working on cord blood
+## Cord blood: direction of effect
 
 The model says — and the literature agrees — that **in cord blood HSPC, GSK3
 inhibition is a self-renewal and engraftment intervention, not a
@@ -188,12 +188,12 @@ Rising limb = differentiation efficiency, falling limb = viability. Optimum
 window width: **a tighter clone peaks higher but has a narrower usable dose
 range.**
 
-One honest wart: ~28 % of cells are still TBXT+ at day 10 at every dose above
+A known limitation: ~28 % of cells are still TBXT+ at day 10 at every dose above
 3 µM. These are the cells with the highest drawn autocrine Wnt tone, which never
 get a Wnt-low window and so never commit or extinguish the streak programme.
-That is a prediction, not a fudge — **the non-cardiomyocyte fraction should be
-TBXT+ residual mesoderm concentrated where local Wnt was highest** — but it is
-higher than a real day-10 culture and is a place the model is probably wrong.
+This is a prediction — the non-cardiomyocyte fraction should be TBXT+ residual
+mesoderm concentrated where local Wnt was highest — but it is higher than a real
+day-10 culture and is likely a defect in the model.
 
 ### Wnt and Nodal are two separate knobs (`npm run lineage`)
 
@@ -208,8 +208,7 @@ Wnt sets whether cells leave pluripotency at all; Nodal sets which side of the
 streak they leave through. Neither alone picks a lineage, because EOMES is an
 AND-gate on both.
 
-Two cautions this experiment taught the hard way, and both apply to your bench
-readouts as much as to the model:
+Two cautions that apply to bench readouts as much as to the model:
 
 - **MESP1 is transient.** It peaks at 24–26 h, is down to ~0.3 by 48 h, and is
   gone by day 3. Scored at day 7 it reads as background at every dose and looks
@@ -247,7 +246,7 @@ a western blot would look unchanged while the reporter falls.
 
 ---
 
-## Fitting it to your data
+## Calibration
 
 ```bash
 npm run fitcheck     # recovers known parameters from synthetic data first
@@ -294,7 +293,7 @@ zeros matter too: at 6 µM the system is saturated past the switch, so **TNNT2
 tells you nothing about CHIR potency.** Use TOPflash, or a fate readout near the
 threshold dose (2–3 µM), where the switch is still responsive.
 
-## What this model is not
+## Scope and limitations
 
 - **Not spatial.** Colony density and edge effects drive much of the patchiness
   in real differentiation. Every cell here sees the same medium.

@@ -5,7 +5,7 @@
       "//": "cwd must be the workspace root: report.js writes CSVs to ./out relative to process.cwd(), so launching with a different cwd scatters output.",
       "type": "node",
       "request": "launch",
-      "name": "Run the experiment I'm looking at",
+      "name": "Run current file",
       "program": "${file}",
       "cwd": "${workspaceFolder}",
       "console": "integratedTerminal"

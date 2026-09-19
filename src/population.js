@@ -7,17 +7,15 @@ import { rk4 } from './integrate.js';
 const CARDIAC = { rhs: cardiac.rhs, initialState: cardiacInit, IDX: cardiacIDX };
 
 // ---------------------------------------------------------------------------
-// A dish is not one cell. The TBXT and GATA4 switches in this model are
-// bistable, so a single deterministic cell gives an all-or-none answer, while
-// flow cytometry gives you a percentage. The graded, bell-shaped dose-response
-// people actually measure IS the heterogeneity: cells differ in how much drug
-// they take up, how much destruction-complex capacity they carry, and how
-// deeply pluripotent they were at t = 0, so they cross the switch threshold at
-// different doses.
+// The TBXT and GATA4 switches are bistable, so a single deterministic cell
+// gives an all-or-none answer while flow cytometry reports a percentage. The
+// graded dose-response is the heterogeneity: cells differ in drug uptake,
+// destruction-complex capacity and initial pluripotency, so they cross the
+// switch threshold at different doses.
 //
-// Predicted consequence: the width of a line's CHIR window is set by its
-// cell-to-cell variance, not by its mean sensitivity. Two lines with identical
-// median IC50 but different CV will have very different "optimal dose" ranges.
+// Consequence: the width of a line's CHIR window is set by its cell-to-cell
+// variance rather than its mean sensitivity. Two lines with the same median
+// IC50 but different CV give different optimal dose ranges.
 // ---------------------------------------------------------------------------
 
 /** Deterministic PRNG so every run is reproducible. */
@@ -97,9 +95,8 @@ export function runPopulation(u, {
       (a, c) => a + (c[mk] > posThreshold ? c.V : 0), 0) / Math.max(totalMass, 1e-9);
     summary[`mean_${mk}`] = mean(cells.map((c) => c[mk]));
   }
-  // Yield per INPUT cell, not per surviving cell: what you actually harvest.
-  // Only defined when the marker was requested, so this is skipped for models
-  // that do not have it.
+  // Yield per input cell rather than per survivor. Only defined for markers
+  // that were requested, so models without them are skipped.
   for (const mk of markers) {
     summary[`yield_${mk}`] = cells.reduce(
       (a, c) => a + (c[mk] > posThreshold ? c.V : 0), 0) / n * 100;

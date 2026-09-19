@@ -7,8 +7,8 @@ import { writeCSV, table, r2 } from '../src/report.js';
 
 // ---------------------------------------------------------------------------
 // Local sensitivity: perturb each parameter +/-20 % and measure the effect on
-// two endpoints. This tells you which of the [A]-tagged guesses actually matter
-// and therefore which ones are worth an experiment.
+// two endpoints, to identify which [A]-tagged assumptions matter enough to be
+// worth measuring.
 // ---------------------------------------------------------------------------
 const T = 240;
 const clone = (o) => JSON.parse(JSON.stringify(o));

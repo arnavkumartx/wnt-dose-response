@@ -19,7 +19,7 @@ kind,protocol,readout,time_h,value,sd,ref
 
 ## What `value` has to be
 
-**This is the part that goes wrong.** The three assays are compared differently.
+The three assays are compared differently.
 
 - **`topflash`** — fold-change of the reporter relative to a reference. If `ref`
   is set, the model divides by that protocol at the same timepoint; if it is
@@ -63,7 +63,7 @@ parameters and reports how well it recovers them. If recovery is poor on
 synthetic data it will be worse on yours, and the fix is more informative
 timepoints, not more iterations.
 
-## Two things that will bite you
+## Two common pitfalls
 
 **Flow rows are ~60× the cost of every other row.** A `flow` row runs the whole
 population ensemble, not one cell, so a handful of them turns a one-minute fit

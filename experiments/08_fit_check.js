@@ -24,7 +24,7 @@ const PROTOCOLS = {
   giwi6:  [{ from: 0, to: 24, set: { chir: 6 } }, { from: 72, to: 120, set: { iwp: 0.95 } }]
 };
 
-// --- the ground truth we will try to recover -------------------------------
+// --- ground truth to be recovered ------------------------------------------
 const TRUTH = {
   'wnt.k_phos':     P.wnt.k_phos * 1.45,
   'wnt.k_syn_ax2':  P.wnt.k_syn_ax2 * 0.65,

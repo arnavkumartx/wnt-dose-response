@@ -3,8 +3,8 @@ import { P } from '../src/params.js';
 import { writeCSV, table, r2 } from '../src/report.js';
 
 // ---------------------------------------------------------------------------
-// The single most useful number this model produces: the gap between the
-// biochemical IC50 of CHIR99021 and the dose you actually pipette.
+// The gap between the biochemical IC50 of CHIR99021 and the dose used at the
+// bench.
 // ---------------------------------------------------------------------------
 console.log('=== 01  CHIR99021 -> GSK3 occupancy ===\n');
 

@@ -39,7 +39,7 @@ export function rhs(t, y, u, par = P, out = SCRATCH) {
   const B_ = hill(inp.bmp4,    g.K_bmp, g.n_bmp);   // SMAD1/5/8 (BMP4)
 
   const OS = hill(Math.sqrt(Math.max(OCT4, 0) * Math.max(SOX2, 0)), g.K_os, g.n_os);
-  // Cells leave pluripotency through EITHER side of the streak. Keying this on
+  // Cells leave pluripotency through either side of the streak. Keying this on
   // TBXT alone means SOX2 never falls in a high-Nodal endoderm run, where TBXT
   // stays low and EOMES/SOX17 carry the transition instead.
   const leaving = orv(TBXT, EOMES, SOX17);
@@ -54,14 +54,14 @@ export function rhs(t, y, u, par = P, out = SCRATCH) {
   // NKX2-5+ cardiac mesoderm and SOX17+ endoderm are both T-negative.
   const committed = orv(hill(NKX25, g.K_commit, g.n_commit), hill(SOX17, g.K_commit, g.n_commit));
 
-  // TBXT: direct TCF/LEF target, also Nodal-inducible. SOX2 RAISES its Wnt
-  // threshold rather than vetoing it - a hard veto makes the switch unflippable.
+  // TBXT: direct TCF/LEF target, also Nodal-inducible. SOX2 raises its Wnt
+  // threshold rather than vetoing it; a hard veto leaves the switch unflippable.
   d[IDX.TBXT] = g.k_tbxt * (g.leak + (1 - g.leak)
                 * orv(hill(W, g.K_tcf_tbxt, g.n_tcf_tbxt), g.tbxt_act * S_)
                 * (g.sox2_rep_min + (1 - g.sox2_rep_min) * rep(SOX2, g.K_sox2_rep, g.n_sox2_rep))
                 * (1 - g.commit_rep * committed)) - g.d_tbxt * TBXT;
 
-  // EOMES needs BOTH Wnt and strong SMAD2/3 - this AND-gate is the endoderm arm.
+  // EOMES needs both Wnt and strong SMAD2/3; this AND-gate is the endoderm arm.
   d[IDX.EOMES] = g.k_eomes * (g.leak + (1 - g.leak) * S_ * hill(W, g.K_tcf_eomes, g.n_tcf_eomes))
                  - g.d_eomes * EOMES;
 
@@ -86,13 +86,13 @@ export function rhs(t, y, u, par = P, out = SCRATCH) {
 
   // GATA4 is the cardiac-mesoderm memory. MESP1 is a pulse that is gone within a
   // day; GATA4 latches by self-activation and carries the state into the Wnt-off
-  // window. Without this latch the model cannot make cardiomyocytes on ANY
-  // schedule, which is itself a testable prediction.
+  // window. Without this latch no schedule yields cardiomyocytes, which is
+  // itself a testable prediction.
   d[IDX.GATA4] = g.k_gata4 * (g.leak + (1 - g.leak)
                  * orv(hill(MESP1, g.K_mesp1, g.n_mesp1),
                        g.gata4_self * hill(GATA4, g.K_gata4, g.n_gata4))) - g.d_gata4 * GATA4;
 
-  // NKX2-5 requires cardiac mesoderm AND canonical Wnt to be OFF. This single
+  // NKX2-5 requires cardiac mesoderm and canonical Wnt to be off. This single
   // repression term is what forces the protocol to be biphasic. Its own
   // autoregulation is the commitment step: once a cell is a cardiac progenitor,
   // returning Wnt no longer reverses it.

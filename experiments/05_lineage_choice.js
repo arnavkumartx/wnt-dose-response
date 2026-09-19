@@ -8,12 +8,10 @@ import { writeCSV, table, r2 } from '../src/report.js';
 // So the mesoderm/endoderm split should be governed by the Activin axis at
 // constant CHIR - which is exactly how the two protocols differ in practice.
 // ---------------------------------------------------------------------------
-// TIMING MATTERS MORE THAN IT LOOKS. MESP1 is a transient pulse: it peaks at
-// 24-26 h, is down to ~0.3 by 48 h, and is gone by day 3. Scored at day 7 it
-// reads as the leak floor at EVERY dose and says nothing at all; scored at 48 h
-// it is already flat. TBXT peaks at 24 h, so 26 h catches both. Each marker is
-// read when it is actually informative, which for a transient gene is doing as
-// much work as the dose axis.
+// MESP1 is a transient pulse: it peaks at 24-26 h, falls to ~0.3 by 48 h and is
+// gone by day 3. Scored at day 7 it sits at the leak floor for every dose, and
+// at 48 h it is already flat. TBXT peaks at 24 h, so 26 h catches both. For a
+// transient gene the sampling time matters as much as the dose.
 const N = 120, H = 0.02;
 const T_STREAK = 26, T_LATE = 168;
 
@@ -25,10 +23,10 @@ console.log('CHIR 0-24 h; Activin A held for 72 h.');
 console.log('TBXT and MESP1 scored at 26 h, where both peak; SOX17 at day 7.\n');
 
 const grid = [];
-// NOTE ON READOUTS: GATA4 is deliberately NOT used to score the mesoderm side.
-// GATA4/GATA6 are expressed in definitive endoderm as well as cardiac mesoderm,
-// so GATA4+ does not discriminate the two lineages - in this model it goes high
-// in both corners. MESP1 is the cardiac-mesoderm-specific call.
+// GATA4 is not used to score the mesoderm side: GATA4/GATA6 are expressed in
+// definitive endoderm as well as cardiac mesoderm, so GATA4+ does not separate
+// the two lineages and goes high in both corners here. MESP1 is the
+// cardiac-mesoderm-specific call.
 const markers = ['TBXT', 'SOX17', 'MESP1', 'GATA4', 'NKX25', 'OCT4'];
 const makeProto = (dose, act) => protocol([
   { from: 0, to: 24, set: { chir: dose, activin: act } },

@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Run your own protocol without editing any source.
+// Run a protocol without editing any source.
 //
 //   node run.js --chir 6 --chir-end 24 --iwp 72:120 --days 10
 //   node run.js --chir 4 --chir-end 48 --activin 1.0 --days 7      # endoderm arm

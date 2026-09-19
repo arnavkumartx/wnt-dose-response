@@ -5,10 +5,10 @@ import { protocol } from './protocol.js';
 import { runPopulation } from './population.js';
 
 // ---------------------------------------------------------------------------
-// Fit the [F]- and [A]-tagged parameters to your own measurements.
+// Fit the [F]- and [A]-tagged parameters against measured data.
 //
-// Three readout kinds, because the three assays measure different things and
-// comparing them naively is the usual way a fit goes wrong:
+// Three readout kinds, since the assays measure different quantities and
+// conflating them is a common source of bad fits:
 //
 //   topflash  fold-change of the reporter vs untreated  -> model TCF_B ratio
 //   qpcr      fold-change vs a reference condition      -> model TF ratio

@@ -5,23 +5,22 @@ import { hill, rep, orv } from './kinetics.js';
 // ---------------------------------------------------------------------------
 // Cord blood CD34+ HSPC module.
 //
-// The point of this module is that in haematopoiesis the Wnt dose-response is
-// NOT monotonic, and the model is built so that falls out rather than being
-// asserted. Two direct Wnt target genes have different thresholds:
+// In haematopoiesis the Wnt dose-response is non-monotonic. That behaviour is
+// not asserted here; it follows from two direct Wnt target genes having
+// different thresholds:
 //
 //     HOXB4  switches on at LOW  beta-catenin  -> self-renewal
 //     MYC    switches on at HIGH beta-catenin  -> niche exit, differentiation
 //
-// so mild pathway activation raises self-renewal while strong activation
-// overruns it. That is the mechanism behind the "dosage-dependent" picture in
-// Luis 2011, and it is why gain-of-function studies report HSC expansion or HSC
-// depletion depending on how hard they pushed.
+// Mild pathway activation raises self-renewal; strong activation overruns it.
+// This is the mechanism behind the dosage-dependent picture in Luis 2011, and
+// why gain-of-function studies report either HSC expansion or HSC depletion.
 //
-// Note what this implies for CHIR: in cord blood HSPC, GSK3 inhibition is a
-// self-renewal / engraftment intervention, not a differentiation one. The
-// published cord blood result is *delayed* expansion with *preserved* stem cell
-// activity (Holmes 2008), and the same compound given in vivo after transplant
-// makes regeneration worse (Shen 2014).
+// Implication for CHIR: in cord blood HSPC, GSK3 inhibition acts on
+// self-renewal and engraftment rather than differentiation. The published
+// result is delayed expansion with preserved stem cell activity (Holmes 2008);
+// the same compound given in vivo post-transplant impairs regeneration
+// (Shen 2014).
 // ---------------------------------------------------------------------------
 
 export const SPECIES = [
