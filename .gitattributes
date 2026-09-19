@@ -1,0 +1,16 @@
+# Normalise line endings so the repo stores LF regardless of who commits from
+# where. Without this, every commit from Windows logs a wall of "LF will be
+# replaced by CRLF" warnings and diffs can show whole files as changed.
+* text=auto eol=lf
+
+# Batch files must keep CRLF or cmd.exe can mis-parse them.
+*.cmd text eol=crlf
+*.bat text eol=crlf
+
+# Notebooks are JSON; treat as text but never merge automatically - a merged
+# .ipynb is usually corrupt.
+*.ipynb text eol=lf merge=binary
+
+*.png binary
+*.jpg binary
+*.pdf binary
