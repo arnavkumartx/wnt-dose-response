@@ -1,19 +1,4 @@
-"""
-Python wrapper around the JavaScript model.
 
-The model itself stays in JavaScript. This module only starts it and turns its
-output into DataFrames, so there is exactly ONE implementation of the biology
-and nothing to keep in sync. Every fix made to src/ is automatically reflected
-here; a Python port would have needed each one done twice.
-
-    import stemcell as sc
-
-    df = sc.run(model="hsc", chir=1, chir_end=168, days=7)   # trajectory
-    s  = sc.population(model="cardiac", chir=6, cells=200)   # flow-like summary
-    sw = sc.sweep([0, 1, 2, 4, 6, 12], model="hsc", days=7, chir_end=168)
-
-Requires Node on PATH. Nothing else.
-"""
 
 from __future__ import annotations
 
