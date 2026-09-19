@@ -18,7 +18,15 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import matplotlib
-matplotlib.use("Agg")          # no display needed; must precede pyplot import
+
+# Only force the headless backend when this file is RUN as a script. Importing
+# it from a notebook must NOT switch the backend: doing so silently stops every
+# inline plot rendering for the rest of the kernel session, with no error to
+# explain why.
+_AS_SCRIPT = __name__ == "__main__"
+if _AS_SCRIPT:
+    matplotlib.use("Agg")
+
 import matplotlib.pyplot as plt
 import pandas as pd
 
@@ -40,7 +48,11 @@ def _save(fig, name: str, dpi: int) -> Path:
     OUT.mkdir(parents=True, exist_ok=True)
     path = OUT / f"{name}.png"
     fig.savefig(path, dpi=dpi, bbox_inches="tight", facecolor="white")
-    plt.close(fig)
+    # As a script, close the figure to free memory. In a notebook, leave it open
+    # so the call also displays the plot inline instead of writing a file and
+    # appearing to do nothing.
+    if _AS_SCRIPT:
+        plt.close(fig)
     print(f"  {path.relative_to(sc.ROOT)}")
     return path
 
