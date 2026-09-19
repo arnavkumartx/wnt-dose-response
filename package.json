@@ -16,7 +16,8 @@
     "fast": "npm run calibrate && npm run gsk3 && npm run biphasic && npm run cordblood && npm run inhibitors",
     "all": "npm run fast && npm run dose && npm run lineage && npm run sens",
     "fit": "node experiments/09_fit_mydata.js",
-    "hsc": "node run.js --model hsc --chir 1 --chir-end 168 --days 7"
+    "hsc": "node run.js --model hsc --chir 1 --chir-end 168 --days 7",
+    "jupyter": "start-jupyter.cmd"
   },
   "license": "MIT"
 }

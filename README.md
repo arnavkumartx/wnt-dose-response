@@ -328,8 +328,14 @@ run.js             CLI, both models:
 ## Using it from Jupyter
 
 ```bash
-python -m jupyterlab          # or open notebooks/01_explore.ipynb in VS Code
+npm run jupyter              # or double-click start-jupyter.cmd
 ```
+
+**Use that, not a bare `python -m jupyterlab`.** Jupyter roots its file browser
+at the shell's current directory, so launching it from another project shows
+THAT project and looks like Jupyter opening the wrong app. `start-jupyter.cmd`
+pins the root to this repo via its own location, so it is correct no matter
+where you run it from, including a double-click.
 
 `notebooks/stemcell.py` wraps the model for Python. The model stays in
 JavaScript and the wrapper only starts it and parses the output, so there is
