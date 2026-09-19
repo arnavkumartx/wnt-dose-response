@@ -1,11 +1,28 @@
-# CHIR99021 → GSK3 → Wnt/β-catenin → stem cell fate
+# Wnt dose–response
 
-A mechanistic, runnable model of how a small molecule at the top of a signalling
-cascade ends up choosing a cell fate. Zero dependencies, pure Node.
+**CHIR99021 → GSK3 → Wnt/β-catenin → stem cell fate.** A mechanistic, runnable
+model of how a small molecule at the top of a signalling cascade ends up
+choosing a cell fate.
+
+[![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![node](https://img.shields.io/badge/node-%E2%89%A518-339933?logo=node.js&logoColor=white)](https://nodejs.org)
+[![python](https://img.shields.io/badge/python-3.12-3776AB?logo=python&logoColor=white)](https://www.python.org)
+![dependencies](https://img.shields.io/badge/dependencies-none-success)
+
+<p align="center">
+  <img src="docs/figures/01_cordblood_dose.png" width="760"
+       alt="Cord blood CHIR dose-response: expansion falls monotonically while engraftment peaks at 1 uM">
+</p>
+
+Cord blood CD34+ over 7 days. Expansion falls the whole way while engraftment
+peaks at 1 µM — fewer cells, better cells — and past the MYC threshold, neither.
+**High-dose CHIR is worse than no CHIR at all.**
 
 ```bash
+npm install      # nothing to install, but it sets up the scripts
 npm run fast     # calibration, GSK3 curve, biphasic test, cord blood, inhibitors  (~1 min)
 npm run all      # adds the population dose-response, lineage map and sensitivity  (~8 min)
+npm run jupyter  # notebook, plots, and your own data alongside the model
 ```
 
 Two fate modules sit on one shared signalling core:
@@ -91,6 +108,11 @@ a **201-fold** shift, ≈3.6 µM once divided by the cell:medium partition
 coefficient. That is the entire explanation for the dose every protocol uses,
 and it comes out of measured numbers with no fitting.
 
+<p align="center">
+  <img src="docs/figures/05_gsk3_occupancy.png" width="700"
+       alt="GSK3 inhibition versus CHIR concentration, with the protocol dose range marked">
+</p>
+
 It also predicts that anything moving the cellular ATP pool moves the effective
 dose: across 1–5 mM the medium IC50 slides 1.2 → 6.0 µM. Galactose medium,
 hypoxia, oligomycin, or plating density should all shift your dose–response — a
@@ -165,7 +187,22 @@ Nothing was fitted to this. It follows from one repression term plus two latches
 
 Continuous CHIR makes excellent cardiac *mesoderm* and zero cardiomyocytes.
 
+<p align="center">
+  <img src="docs/figures/03_cardiac_biphasic.png" width="880"
+       alt="Wnt output and TNNT2 over 10 days for four CHIR schedules">
+</p>
+
 ### Cord blood: the optimum is interior and low (`npm run cordblood`)
+
+<p align="center">
+  <img src="docs/figures/02_threshold_gap.png" width="700"
+       alt="HOXB4 rises at lower Wnt than MYC; stem frequency peaks between them">
+</p>
+
+The non-monotonic response is not asserted anywhere. It emerges because HOXB4
+(self-renewal) switches on *below* MYC (niche exit), so the gap between those
+two thresholds sets where the optimum sits — which is exactly the measurement
+worth making first.
 
 7-day CD34+ culture with SCF/TPO/FLT3L:
 
@@ -181,6 +218,11 @@ is worse than no CHIR at all.** Lymphoid output falls monotonically with dose �
 there is no lymphoid-friendly window anywhere.
 
 ### Bell-shaped cardiac dose–response (`npm run dose`)
+
+<p align="center">
+  <img src="docs/figures/04_cardiac_bell.png" width="700"
+       alt="Cardiac dose-response: efficiency rises then viability falls">
+</p>
 
 Rising limb = differentiation efficiency, falling limb = viability. Optimum
 6 µM at 64.4 % yield, >50 %-of-max window 3–16 µM, and the top is fairly flat
@@ -318,7 +360,8 @@ src/kinetics.js    Hill / Michaelis-Menten / noisy-OR helpers
 src/integrate.js   RK4, step verified by halving, throws on non-finite states
 src/protocol.js    medium schedules (GiWi, endoderm, cord blood)
 experiments/       runnable studies, each writes CSV to out/
-data/              where your measurements go
+data/              where measurements go
+docs/figures/      the plots rendered in this README
 run.js             CLI, both models:
                      node run.js --chir 6 --chir-end 24 --days 10
                      node run.js --model hsc --chir 1 --chir-end 168 --days 7
