@@ -324,3 +324,30 @@ run.js             CLI, both models:
                      node run.js --chir 6 --chir-end 24 --days 10
                      node run.js --model hsc --chir 1 --chir-end 168 --days 7
 ```
+
+## Using it from Jupyter
+
+```bash
+python -m jupyterlab          # or open notebooks/01_explore.ipynb in VS Code
+```
+
+`notebooks/stemcell.py` wraps the model for Python. The model stays in
+JavaScript and the wrapper only starts it and parses the output, so there is
+exactly one implementation of the biology and no second copy to drift.
+
+```python
+import stemcell as sc
+
+df = sc.run(model="hsc", chir=1, chir_end=168, days=7)   # trajectory -> DataFrame
+s  = sc.population(model="cardiac", chir=6, cells=200)   # flow-like percentages
+sw = sc.sweep([0, 1, 2, 4, 6, 12], model="hsc", days=7, chir_end=168)
+txt = sc.experiment("07_iwr_vs_iwp")                     # any experiment's output
+```
+
+`run.js --json` is what makes this work: it emits the full trajectory, the
+protocol and (for the HSPC model) the engraftment read-outs as JSON on stdout,
+so nothing has to scrape formatted tables.
+
+`notebooks/01_explore.ipynb` is a starter covering the cord blood dose curve,
+the HOXB4/MYC threshold gap behind it, the cardiac biphasic comparison, and the
+population-vs-flow readout.

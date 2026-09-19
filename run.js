@@ -76,14 +76,6 @@ if (!isHSC && iwpArg !== 'none') {
 }
 const u = protocol(windows);
 
-console.log(`\nmodel: ${modelName}`);
-console.log(`protocol: CHIR ${dose} uM ${chirStart}-${chirEnd} h`
-  + (wnt3a ? `, WNT3A ${wnt3a} nM` : '')
-  + (isHSC ? `, cytokines ${cytokines}`
-           : `, Activin ${activin}, BMP4 ${bmp4}`
-             + (iwpArg === 'none' ? ', no Wnt inhibitor' : `, IWP ${iwpArg} h`))
-  + `, ${days} days, ${cells} cell${cells > 1 ? 's' : ''}\n`);
-
 const SHOW = isHSC
   ? ['Bcat_c', 'TCF_B', 'HOXB4', 'MYC', 'CDKN1C', 'CCND1', 'CXCR4',
      'CD34', 'CD90', 'CD45RA', 'LYMPH', 'STEM', 'Ncell', 'V']
@@ -92,6 +84,48 @@ const SHOW = isHSC
 const MARKERS = isHSC
   ? ['CD34', 'CD90', 'CD45RA', 'LYMPH']
   : ['TBXT', 'GATA4', 'NKX25', 'TNNT2', 'SOX17', 'OCT4'];
+
+// --json emits a machine-readable blob on stdout instead of tables, so the
+// Python wrapper in notebooks/ can parse it directly rather than scraping
+// formatted output. Nothing else prints in this mode.
+const asJson = has('json');
+const SPECIES_ALL = isHSC ? hspc.SPECIES : cardiacState.SPECIES;
+const protocolSummary = {
+  model: modelName, chir: dose, chir_start: chirStart, chir_end: chirEnd,
+  wnt3a, days, cells, windows,
+  ...(isHSC ? { cytokines } : { activin, bmp4, iwp: iwpArg })
+};
+
+if (asJson) {
+  if (cells === 1) {
+    const tr = rk4(M.rhs, M.initialState(), { tEnd: T, h: 0.005, sample: 1, u });
+    const out = { mode: 'trajectory', protocol: protocolSummary, t_h: [], GSK3_active: {} };
+    const cols = {};
+    for (const s of SPECIES_ALL) cols[s] = [];
+    const gsk = [];
+    for (const p of tr) {
+      out.t_h.push(p.t);
+      gsk.push(gsk3Activity(p.y[M.IDX.CHIR_in]).active);
+      for (const s of SPECIES_ALL) cols[s].push(p.y[M.IDX[s]]);
+    }
+    out.GSK3_active = gsk;
+    out.species = cols;
+    if (isHSC) out.engraftment = hspc.engraftment(tr[tr.length - 1].y);
+    process.stdout.write(JSON.stringify(out));
+  } else {
+    const { summary } = runPopulation(u, { n: cells, tEnd: T, h: 0.02, model: M, markers: MARKERS });
+    process.stdout.write(JSON.stringify({ mode: 'population', protocol: protocolSummary, summary }));
+  }
+  process.exit(0);
+}
+
+console.log(`\nmodel: ${modelName}`);
+console.log(`protocol: CHIR ${dose} uM ${chirStart}-${chirEnd} h`
+  + (wnt3a ? `, WNT3A ${wnt3a} nM` : '')
+  + (isHSC ? `, cytokines ${cytokines}`
+           : `, Activin ${activin}, BMP4 ${bmp4}`
+             + (iwpArg === 'none' ? ', no Wnt inhibitor' : `, IWP ${iwpArg} h`))
+  + `, ${days} days, ${cells} cell${cells > 1 ? 's' : ''}\n`);
 
 if (cells === 1) {
   const tr = rk4(M.rhs, M.initialState(), { tEnd: T, h: 0.005, sample: 1, u });
