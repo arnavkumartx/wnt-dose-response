@@ -2,3 +2,5 @@ out/
 node_modules/
 .ipynb_checkpoints/
 __pycache__/
+wnt-fate-upload.zip
+*.zip
